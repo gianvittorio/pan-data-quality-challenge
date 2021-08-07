@@ -1,7 +1,7 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.impl;
 
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Result;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.PayloadProcessor;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.InputStreamProcessor;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.BufferedReader;
@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.util.StringJoiner;
 
 @Log4j2
-public class PayloadProcessorImpl implements PayloadProcessor {
+public class InputStreamProcessorImpl implements InputStreamProcessor {
 
     @Override
     public Result process(final InputStreamReader inputStreamReader) {

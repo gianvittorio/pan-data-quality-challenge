@@ -6,7 +6,7 @@ import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRe
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.PayloadProcessor;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.InputStreamProcessor;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.Constants;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.service.S3EventProcessorService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class S3EventProcessorServiceImpl implements S3EventProcessorService {
 
     private final AmazonS3 s3Client;
 
-    private final PayloadProcessor payloadProcessor;
+    private final InputStreamProcessor payloadProcessor;
 
     @Override
     public void process(final S3Event event) {
