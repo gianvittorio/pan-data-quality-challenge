@@ -11,10 +11,8 @@ import java.util.StringJoiner;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Result {
+public class StreamProcessingResult extends AbstractResult {
 
-    private boolean isValid;
     private int numberOfProcessedFields = 0;
     private StringJoiner payload;
-    private StringJoiner message;
 }

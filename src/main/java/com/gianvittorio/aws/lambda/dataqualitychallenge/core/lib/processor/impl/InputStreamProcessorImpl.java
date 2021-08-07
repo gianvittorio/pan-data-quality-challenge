@@ -1,6 +1,7 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.impl;
 
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Result;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProcessingResult;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.StreamProcessingResult;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.InputStreamProcessor;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.RecordProcessor;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.RecordIterator;
@@ -19,11 +20,11 @@ public class InputStreamProcessorImpl implements InputStreamProcessor {
     private final RecordProcessor recordProcessor;
 
     @Override
-    public Result process(final InputStreamReader inputStreamReader) {
+    public StreamProcessingResult process(final InputStreamReader inputStreamReader) {
 
         final StringJoiner output = getOutput(inputStreamReader);
 
-        return Result.builder()
+        return StreamProcessingResult.builder()
                 .payload(output)
                 .build();
     }
@@ -39,14 +40,14 @@ public class InputStreamProcessorImpl implements InputStreamProcessor {
             bufferedReader = new BufferedReader(inputStreamReader);
             int lineCnt = 0;
             while (null != (csvOutput = bufferedReader.readLine())) {
-                // Run processor line by line
+
                 if (lineCnt++ == 0) {
                     sj.add(csvOutput);
 
                     continue;
                 }
 
-                Result result = recordProcessor.process(new RecordIterator(csvOutput));
+                RecordProcessingResult result = recordProcessor.process(new RecordIterator(csvOutput));
                 if (result.isValid()) {
                     sj.add(csvOutput);
                 }

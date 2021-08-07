@@ -1,8 +1,6 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor;
 
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Result;
+public interface PayloadProcessor<T, V> {
 
-public interface PayloadProcessor<T> {
-
-    Result process(final T payload);
+    V process(final T payload);
 }

@@ -4,9 +4,7 @@ import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProces
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.RecordProcessorComposite;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.RecordIterator;
 
-public class PositivoProcessor extends RecordProcessorComposite {
-
-    private static final String POSITIVO_MASK_PATTERN = "^\\d+$";
+public class FirstProcessor extends RecordProcessorComposite {
 
     @Override
     public RecordProcessingResult process(final RecordIterator recordIterator) {
@@ -16,15 +14,14 @@ public class PositivoProcessor extends RecordProcessorComposite {
             return result;
         }
 
-        final String field = recordIterator.next();
         result = new RecordProcessingResult();
-        result.setValid(field.matches(POSITIVO_MASK_PATTERN));
+        result.setValid(true);
 
         final RecordProcessingResult nextResult = super.process(recordIterator);
         if (nextResult != null) {
 
             result.setNumberOfProcessedFields(1 + nextResult.getNumberOfProcessedFields());
-            if (!nextResult.isValid()) {
+            if (!nextResult.isValid() || result.getNumberOfProcessedFields() != this.rank) {
                 result.setValid(false);
             }
         }

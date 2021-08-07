@@ -16,7 +16,8 @@ public class RecordProcessorConfiguration {
 
     @Bean
     public RecordProcessor recordProcessor() {
-        final RecordProcessor recordProcessor = new IdentifMaskProcessor()
+        final RecordProcessor recordProcessor = new FirstProcessor()
+                .addNext(new IdentifMaskProcessor())
                 .addNext(new ModeloProcessor())
                 .addNext(new ScoreProcessor())
                 .addNext(new RestritivoProcessor())

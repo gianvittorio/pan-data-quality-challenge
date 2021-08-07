@@ -1,7 +1,6 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.util;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 public class RecordIterator implements Iterator<String> {
 
@@ -14,6 +13,10 @@ public class RecordIterator implements Iterator<String> {
     private int rightPointer = 0;
 
     public RecordIterator(final String line) {
+
+        if (line == null) {
+            throw new IllegalArgumentException();
+        }
         this.line = line;
         this.chars = line.toCharArray();
     }
@@ -29,7 +32,7 @@ public class RecordIterator implements Iterator<String> {
     public String next() {
         //final String line = "1,YWZ,643822,643,822,,2021-03-31";
         if (!hasNext()) {
-            throw new NoSuchElementException();
+            return null;
         }
 
         rightPointer = leftPointer;

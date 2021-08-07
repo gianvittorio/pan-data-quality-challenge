@@ -5,16 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.StringJoiner;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Result {
+public class RecordProcessingResult extends AbstractResult {
 
-    private boolean isValid;
     private int numberOfProcessedFields = 0;
-    private StringJoiner payload;
-    private StringJoiner message;
 }

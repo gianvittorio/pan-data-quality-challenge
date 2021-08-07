@@ -1,7 +1,6 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,11 +9,9 @@ import java.util.StringJoiner;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Result {
+public abstract class AbstractResult {
 
-    private boolean isValid;
-    private int numberOfProcessedFields = 0;
-    private StringJoiner payload;
-    private StringJoiner message;
+    protected boolean isValid;
+
+    protected StringJoiner message;
 }

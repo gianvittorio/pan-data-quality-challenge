@@ -1,18 +1,20 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor;
 
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Result;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProcessingResult;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.RecordIterator;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public abstract class RecordProcessorComposite implements RecordProcessor {
 
-    private RecordProcessorComposite next = null;
+    protected RecordProcessorComposite next = null;
+
+    protected int rank = 0;
 
     @Override
-    public Result process(final RecordIterator recordIterator) {
+    public RecordProcessingResult process(final RecordIterator recordIterator) {
 
-        Result result = null;
+        RecordProcessingResult result = null;
         if (recordIterator == null) {
             return result;
         }
@@ -29,6 +31,8 @@ public abstract class RecordProcessorComposite implements RecordProcessor {
         this.next = (this.next == null)
                 ? (next)
                 : (this.next.addNext(next));
+
+        ++this.rank;
 
         return this;
     }
