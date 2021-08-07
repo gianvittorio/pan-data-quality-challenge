@@ -10,7 +10,7 @@ import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.PayloadProcesso
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.Constants;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.service.S3EventProcessorService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 import static com.amazonaws.services.s3.event.S3EventNotification.S3Entity;
 import static com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.Constants.*;
 
-@Slf4j
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class S3EventProcessorServiceImpl implements S3EventProcessorService {

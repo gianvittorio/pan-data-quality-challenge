@@ -2,14 +2,14 @@ package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.impl;
 
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Result;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.PayloadProcessor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringJoiner;
 
-@Slf4j
+@Log4j2
 public class PayloadProcessorImpl implements PayloadProcessor {
 
     @Override
