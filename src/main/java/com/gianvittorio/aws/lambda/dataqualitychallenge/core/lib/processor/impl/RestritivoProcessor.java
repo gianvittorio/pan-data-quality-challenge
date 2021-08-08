@@ -8,6 +8,12 @@ public class RestritivoProcessor extends RecordProcessorComposite {
 
     private static final String RESTRITIVO_MASK_PATTERN = "^\\d+$";
 
+    private static final String FIELD = "restritivo";
+
+    public RestritivoProcessor() {
+        super(FIELD);
+    }
+
     @Override
     public RecordProcessingResult process(final RecordIterator recordIterator) {
 
@@ -18,7 +24,12 @@ public class RestritivoProcessor extends RecordProcessorComposite {
 
         final String field = recordIterator.next();
         result = new RecordProcessingResult();
-        result.setValid(field.matches(RESTRITIVO_MASK_PATTERN));
+        if (!field.matches(RESTRITIVO_MASK_PATTERN)) {
+            result.setValid(false);
+
+            result.getIncorrectFields()
+                    .add(field);
+        }
 
         final RecordProcessingResult nextResult = super.process(recordIterator);
         if (nextResult != null) {
@@ -26,6 +37,8 @@ public class RestritivoProcessor extends RecordProcessorComposite {
             result.setNumberOfProcessedFields(1 + nextResult.getNumberOfProcessedFields());
             if (!nextResult.isValid()) {
                 result.setValid(false);
+                result.getIncorrectFields()
+                        .addAll(nextResult.getIncorrectFields());
             }
         }
 

@@ -13,6 +13,12 @@ public class AnomesdiaProcessor extends RecordProcessorComposite {
 
     private static final String DEFAULT_DATE_FORMAT = "yyyyMMdd";
 
+    private static final String FIELD = "anomesdia";
+
+    public AnomesdiaProcessor() {
+        super(FIELD);
+    }
+
     @Override
     public RecordProcessingResult process(final RecordIterator recordIterator) {
 
@@ -21,17 +27,22 @@ public class AnomesdiaProcessor extends RecordProcessorComposite {
             return result;
         }
 
-
         final String field = recordIterator.next();
         result = new RecordProcessingResult();
-        result.setValid(true);
+        if (!assertDate(field)) {
+            result.setValid(false);
+            result.getIncorrectFields()
+                    .add(field);
+        }
 
         final RecordProcessingResult nextResult = super.process(recordIterator);
         if (nextResult != null) {
 
             result.setNumberOfProcessedFields(1 + nextResult.getNumberOfProcessedFields());
             if (!nextResult.isValid()) {
-                result.setValid(assertDate(field));
+                result.setValid(false);
+                result.getIncorrectFields()
+                        .addAll(nextResult.getIncorrectFields());
             }
         }
 

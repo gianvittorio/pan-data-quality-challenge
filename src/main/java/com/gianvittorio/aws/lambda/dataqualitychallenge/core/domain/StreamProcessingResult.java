@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringJoiner;
 
 @Data
@@ -15,4 +17,6 @@ public class StreamProcessingResult extends AbstractResult {
 
     private int numberOfProcessedFields = 0;
     private StringJoiner payload;
+
+    private Set<Integer> incorrectIds = new HashSet<>();
 }

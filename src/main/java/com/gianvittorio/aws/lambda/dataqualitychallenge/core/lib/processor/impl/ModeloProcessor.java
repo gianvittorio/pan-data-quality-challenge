@@ -8,6 +8,12 @@ public class ModeloProcessor extends RecordProcessorComposite {
 
     private static final String MODELO_MASK_PATTERN = "^[A-Z]+$";
 
+    private static final String FIELD = "modelo";
+
+    public ModeloProcessor() {
+        super(FIELD);
+    }
+
     @Override
     public RecordProcessingResult process(final RecordIterator recordIterator) {
 
@@ -18,7 +24,12 @@ public class ModeloProcessor extends RecordProcessorComposite {
 
         final String field = recordIterator.next();
         result = new RecordProcessingResult();
-        result.setValid(field.matches(MODELO_MASK_PATTERN));
+        if (!field.matches(MODELO_MASK_PATTERN)) {
+            result.setValid(false);
+            result.getIncorrectFields()
+                    .add(field);
+        }
+
 
         final RecordProcessingResult nextResult = super.process(recordIterator);
         if (nextResult != null) {
@@ -26,6 +37,8 @@ public class ModeloProcessor extends RecordProcessorComposite {
             result.setNumberOfProcessedFields(1 + nextResult.getNumberOfProcessedFields());
             if (!nextResult.isValid()) {
                 result.setValid(false);
+                result.getIncorrectFields()
+                        .addAll(nextResult.getIncorrectFields());
             }
         }
 

@@ -6,6 +6,12 @@ import com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.RecordIterator
 
 public class MsgProcessor extends RecordProcessorComposite {
 
+    private static final String FIELD = "msg";
+
+    public MsgProcessor() {
+        super(FIELD);
+    }
+
     @Override
     public RecordProcessingResult process(final RecordIterator recordIterator) {
 
@@ -24,6 +30,8 @@ public class MsgProcessor extends RecordProcessorComposite {
             result.setNumberOfProcessedFields(1 + nextResult.getNumberOfProcessedFields());
             if (!nextResult.isValid()) {
                 result.setValid(false);
+                result.getIncorrectFields()
+                        .addAll(nextResult.getIncorrectFields());
             }
         }
 

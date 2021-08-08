@@ -8,6 +8,12 @@ public class ScoreProcessor extends RecordProcessorComposite {
 
     private static final String SCORE_MASK_PATTERN = "^\\d+$";
 
+    private static final String FIELD = "score";
+
+    public ScoreProcessor() {
+        super(FIELD);
+    }
+
     @Override
     public RecordProcessingResult process(final RecordIterator recordIterator) {
 
@@ -18,7 +24,12 @@ public class ScoreProcessor extends RecordProcessorComposite {
 
         final String field = recordIterator.next();
         result = new RecordProcessingResult();
-        result.setValid(field.matches(SCORE_MASK_PATTERN));
+        if (!field.matches(SCORE_MASK_PATTERN)) {
+            result.setValid(false);
+
+            result.getIncorrectFields()
+                    .add(field);
+        }
 
         final RecordProcessingResult nextResult = super.process(recordIterator);
         if (nextResult != null) {
@@ -26,6 +37,8 @@ public class ScoreProcessor extends RecordProcessorComposite {
             result.setNumberOfProcessedFields(1 + nextResult.getNumberOfProcessedFields());
             if (!nextResult.isValid()) {
                 result.setValid(false);
+                result.getIncorrectFields()
+                        .addAll(nextResult.getIncorrectFields());
             }
         }
 

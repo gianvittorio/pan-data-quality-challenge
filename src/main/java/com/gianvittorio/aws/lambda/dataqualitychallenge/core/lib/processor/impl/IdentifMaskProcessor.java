@@ -9,6 +9,12 @@ public class IdentifMaskProcessor extends RecordProcessorComposite {
 
     private static final String IDENTIF_MASK_PATTERN = "^\\d+$";
 
+    private static final String FIELD = "identif_mask";
+
+    public IdentifMaskProcessor() {
+        super(FIELD);
+    }
+
     @Override
     public RecordProcessingResult process(final RecordIterator recordIterator) {
 
@@ -20,7 +26,12 @@ public class IdentifMaskProcessor extends RecordProcessorComposite {
         final String field = recordIterator.next();
 
         result = new RecordProcessingResult();
-        result.setValid(field.matches(IDENTIF_MASK_PATTERN));
+        if (!field.matches(IDENTIF_MASK_PATTERN)) {
+            result.setValid(false);
+
+            result.getIncorrectFields()
+                    .add(field);
+        }
 
         final RecordProcessingResult nextResult = super.process(recordIterator);
         if (nextResult != null) {
@@ -28,6 +39,8 @@ public class IdentifMaskProcessor extends RecordProcessorComposite {
             result.setNumberOfProcessedFields(1 + nextResult.getNumberOfProcessedFields());
             if (!nextResult.isValid()) {
                 result.setValid(false);
+                result.getIncorrectFields()
+                        .addAll(nextResult.getIncorrectFields());
             }
         }
 

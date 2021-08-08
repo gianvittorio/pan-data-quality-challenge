@@ -6,6 +6,10 @@ import com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.RecordIterator
 
 public class FirstProcessor extends RecordProcessorComposite {
 
+    public FirstProcessor() {
+        super("");
+    }
+
     @Override
     public RecordProcessingResult process(final RecordIterator recordIterator) {
 
@@ -23,6 +27,8 @@ public class FirstProcessor extends RecordProcessorComposite {
             result.setNumberOfProcessedFields(1 + nextResult.getNumberOfProcessedFields());
             if (!nextResult.isValid() || result.getNumberOfProcessedFields() != this.rank) {
                 result.setValid(false);
+                result.getIncorrectFields()
+                        .addAll(nextResult.getIncorrectFields());
             }
         }
 
