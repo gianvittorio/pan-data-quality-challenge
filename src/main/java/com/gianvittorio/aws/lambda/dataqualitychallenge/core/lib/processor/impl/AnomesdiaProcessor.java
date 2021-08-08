@@ -1,8 +1,8 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.impl;
 
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Record;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProcessingResult;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.SimpleProcessor;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.RecordIterator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,7 +20,7 @@ public class AnomesdiaProcessor extends SimpleProcessor {
     }
 
     @Override
-    public RecordProcessingResult processImpl(RecordIterator recordIterator) {
+    public RecordProcessingResult processImpl(final Record.RecordIterator recordIterator) {
 
 
         final String field = recordIterator.next();

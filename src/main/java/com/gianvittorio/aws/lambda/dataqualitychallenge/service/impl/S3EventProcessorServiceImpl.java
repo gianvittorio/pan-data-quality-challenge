@@ -67,7 +67,11 @@ public class S3EventProcessorServiceImpl implements S3EventProcessorService {
 
             s3Client.putObject(bucketName, outputFilePath, inputStream, new ObjectMetadata());
 
+            log.info("Done!!!: {}", outputFilePath);
+
         } catch (Exception e) {
+            log.error(e.getMessage());
+
             throw new RuntimeException(e);
         }
     }

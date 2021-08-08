@@ -1,8 +1,8 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.impl;
 
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Record;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProcessingResult;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.SimpleProcessor;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.RecordIterator;
 
 public class PositivoProcessor extends SimpleProcessor {
 
@@ -15,7 +15,7 @@ public class PositivoProcessor extends SimpleProcessor {
     }
 
     @Override
-    public RecordProcessingResult processImpl(RecordIterator recordIterator) {
+    public RecordProcessingResult processImpl(final Record.RecordIterator recordIterator) {
 
         final String field = recordIterator.next();
         final RecordProcessingResult result = new RecordProcessingResult();

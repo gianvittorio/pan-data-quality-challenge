@@ -1,10 +1,10 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.impl;
 
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Record;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProcessingResult;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.StreamProcessingResult;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.InputStreamProcessor;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.RecordProcessor;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.RecordIterator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -47,7 +47,9 @@ public class InputStreamProcessorImpl implements InputStreamProcessor {
                     continue;
                 }
 
-                RecordProcessingResult result = recordProcessor.process(new RecordIterator(csvOutput));
+                Record record = new Record(csvOutput);
+
+                RecordProcessingResult result = recordProcessor.process(record.iterator());
                 if (result.isValid()) {
                     sj.add(csvOutput);
                 }

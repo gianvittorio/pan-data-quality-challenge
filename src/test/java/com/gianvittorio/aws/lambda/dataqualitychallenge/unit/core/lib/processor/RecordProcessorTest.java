@@ -2,9 +2,9 @@ package com.gianvittorio.aws.lambda.dataqualitychallenge.unit.core.lib.processor
 
 import com.gianvittorio.aws.lambda.dataqualitychallenge.TestUtils;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.config.RecordProcessorConfiguration;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Record;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProcessingResult;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.RecordProcessor;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.RecordIterator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +32,7 @@ public class RecordProcessorTest {
     @ParameterizedTest(name = "{index} => recordIterator={0}")
     @MethodSource("argumentsWitValidFields")
     @DisplayName("Return valid result whenever arg recordIterator is valid")
-    public void whenRecordIsValidThenReturnValidResult(final RecordIterator recordIterator) {
+    public void whenRecordIsValidThenReturnValidResult(final Record.RecordIterator recordIterator) {
 
         // Given
 
@@ -68,7 +68,7 @@ public class RecordProcessorTest {
 
         // When
         Throwable throwable = catchThrowable(() -> {
-            new RecordIterator(null);
+            new Record(null).iterator();
         });
 
         // Then
@@ -80,7 +80,7 @@ public class RecordProcessorTest {
     @ParameterizedTest(name = "{index} => recordIterator={0}")
     @MethodSource("argumentsWitDifferentFields")
     @DisplayName("Return invalid result whenever arg recordIterator has any non matching field")
-    public void whenRecordHasFieldWrongFormatThenReturnInvalidResult(final RecordIterator recordIterator) {
+    public void whenRecordHasFieldWrongFormatThenReturnInvalidResult(final Record.RecordIterator recordIterator) {
 
         // Given
 
@@ -98,7 +98,7 @@ public class RecordProcessorTest {
     @ParameterizedTest(name = "{index} => recordIterator={0}")
     @MethodSource("argumentsWithMissingFields")
     @DisplayName("Return invalid result whenever arg recordIterator misses any fields")
-    public void whenRecordMissesFieldThenReturnInvalidResult(final RecordIterator recordIterator) {
+    public void whenRecordMissesFieldThenReturnInvalidResult(final Record.RecordIterator recordIterator) {
 
         // Given
 
@@ -115,7 +115,7 @@ public class RecordProcessorTest {
     @ParameterizedTest(name = "{index} => recordIterator={0}")
     @MethodSource("argumentsWithMissingFields")
     @DisplayName("Return invalid result whenever arg recordIterator has any additional")
-    public void whenRecordhasAdditionalFieldThenReturnInvalidResult(final RecordIterator recordIterator) {
+    public void whenRecordhasAdditionalFieldThenReturnInvalidResult(final Record.RecordIterator recordIterator) {
 
         // Given
 
