@@ -10,16 +10,16 @@ public abstract class SimpleProcessor extends RecordProcessorComposite {
     }
 
     @Override
-    public final RecordProcessingResult process(final Record.RecordIterator recordIterator) {
+    public final RecordProcessingResult process(final Record.FieldsIterator fieldsIterator) {
 
         RecordProcessingResult result = null;
-        if (recordIterator == null) {
+        if (fieldsIterator == null) {
             return result;
         }
 
-        result = processImpl(recordIterator);
+        result = processImpl(fieldsIterator);
 
-        final RecordProcessingResult nextResult = super.process(recordIterator);
+        final RecordProcessingResult nextResult = super.process(fieldsIterator);
         if (nextResult != null) {
 
             result.setNumberOfProcessedFields(1 + nextResult.getNumberOfProcessedFields());
@@ -33,5 +33,5 @@ public abstract class SimpleProcessor extends RecordProcessorComposite {
         return result;
     }
 
-    public abstract RecordProcessingResult processImpl(final Record.RecordIterator recordIterator);
+    public abstract RecordProcessingResult processImpl(final Record.FieldsIterator fieldsIterator);
 }

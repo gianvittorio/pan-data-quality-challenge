@@ -15,9 +15,9 @@ public class PositivoProcessor extends SimpleProcessor {
     }
 
     @Override
-    public RecordProcessingResult processImpl(final Record.RecordIterator recordIterator) {
+    public RecordProcessingResult processImpl(final Record.FieldsIterator fieldsIterator) {
 
-        final String field = recordIterator.next();
+        final String field = fieldsIterator.next();
         final RecordProcessingResult result = new RecordProcessingResult();
         if (!field.matches(POSITIVO_MASK_PATTERN)) {
             result.setValid(false);

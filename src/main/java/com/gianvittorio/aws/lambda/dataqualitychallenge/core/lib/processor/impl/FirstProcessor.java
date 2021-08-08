@@ -11,17 +11,17 @@ public class FirstProcessor extends RecordProcessorComposite {
     }
 
     @Override
-    public RecordProcessingResult process(final Record.RecordIterator recordIterator) {
+    public RecordProcessingResult process(final Record.FieldsIterator fieldsIterator) {
 
         RecordProcessingResult result = null;
-        if (recordIterator == null) {
+        if (fieldsIterator == null) {
             return result;
         }
 
         result = new RecordProcessingResult();
         result.setValid(true);
 
-        final RecordProcessingResult nextResult = super.process(recordIterator);
+        final RecordProcessingResult nextResult = super.process(fieldsIterator);
         if (nextResult != null) {
 
             result.setNumberOfProcessedFields(1 + nextResult.getNumberOfProcessedFields());

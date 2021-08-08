@@ -15,8 +15,8 @@ public class ModeloProcessor extends SimpleProcessor {
     }
 
     @Override
-    public RecordProcessingResult processImpl(final Record.RecordIterator recordIterator) {
-        final String field = recordIterator.next();
+    public RecordProcessingResult processImpl(final Record.FieldsIterator fieldsIterator) {
+        final String field = fieldsIterator.next();
         final RecordProcessingResult result = new RecordProcessingResult();
 
         if (!field.matches(MODELO_MASK_PATTERN)) {

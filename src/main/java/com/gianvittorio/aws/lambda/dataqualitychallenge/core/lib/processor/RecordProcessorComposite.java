@@ -16,15 +16,15 @@ public abstract class RecordProcessorComposite implements RecordProcessor {
     }
 
     @Override
-    public RecordProcessingResult process(final Record.RecordIterator recordIterator) {
+    public RecordProcessingResult process(final Record.FieldsIterator fieldsIterator) {
 
         RecordProcessingResult result = null;
-        if (recordIterator == null) {
+        if (fieldsIterator == null) {
             return result;
         }
 
-        if (recordIterator.hasNext() && this.next != null) {
-            result = this.next.process(recordIterator);
+        if (fieldsIterator.hasNext() && this.next != null) {
+            result = this.next.process(fieldsIterator);
         }
 
         return result;

@@ -2,6 +2,23 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Description: An AWS Lambda application that calls the Lambda API.
 Resources:
+  ReportsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ReportsTable
+      AttributeDefinitions:
+        - AttributeName: filepath
+          AttributeType: S
+        - AttributeName: created_at
+          AttributeType: N
+      KeySchema:
+        - AttributeName: filepath
+          KeyType: HASH
+        - AttributeName: created_at
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
   bucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
@@ -21,6 +38,8 @@ Resources:
         - AWSXrayWriteOnlyAccess
         - AWSLambdaVPCAccessExecutionRole
         - AmazonS3FullAccess
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ReportsTable
       Tracing: Active
       Events:
         s3Notification:

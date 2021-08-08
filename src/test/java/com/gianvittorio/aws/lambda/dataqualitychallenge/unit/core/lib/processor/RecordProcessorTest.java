@@ -29,15 +29,15 @@ public class RecordProcessorTest {
     @Autowired
     RecordProcessor recordProcessor;
 
-    @ParameterizedTest(name = "{index} => recordIterator={0}")
+    @ParameterizedTest(name = "{index} => fieldsIterator={0}")
     @MethodSource("argumentsWitValidFields")
-    @DisplayName("Return valid result whenever arg recordIterator is valid")
-    public void whenRecordIsValidThenReturnValidResult(final Record.RecordIterator recordIterator) {
+    @DisplayName("Return valid result whenever arg fieldsIterator is valid")
+    public void whenRecordIsValidThenReturnValidResult(final Record.FieldsIterator fieldsIterator) {
 
         // Given
 
         // When
-        final RecordProcessingResult result = recordProcessor.process(recordIterator);
+        final RecordProcessingResult result = recordProcessor.process(fieldsIterator);
 
         // Then
         assertThat(result)
@@ -77,15 +77,15 @@ public class RecordProcessorTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    @ParameterizedTest(name = "{index} => recordIterator={0}")
+    @ParameterizedTest(name = "{index} => fieldsIterator={0}")
     @MethodSource("argumentsWitDifferentFields")
-    @DisplayName("Return invalid result whenever arg recordIterator has any non matching field")
-    public void whenRecordHasFieldWrongFormatThenReturnInvalidResult(final Record.RecordIterator recordIterator) {
+    @DisplayName("Return invalid result whenever arg fieldsIterator has any non matching field")
+    public void whenRecordHasFieldWrongFormatThenReturnInvalidResult(final Record.FieldsIterator fieldsIterator) {
 
         // Given
 
         // When
-        final RecordProcessingResult result = recordProcessor.process(recordIterator);
+        final RecordProcessingResult result = recordProcessor.process(fieldsIterator);
 
         // Then
         assertThat(result)
@@ -95,15 +95,15 @@ public class RecordProcessorTest {
     }
 
 
-    @ParameterizedTest(name = "{index} => recordIterator={0}")
+    @ParameterizedTest(name = "{index} => fieldsIterator={0}")
     @MethodSource("argumentsWithMissingFields")
-    @DisplayName("Return invalid result whenever arg recordIterator misses any fields")
-    public void whenRecordMissesFieldThenReturnInvalidResult(final Record.RecordIterator recordIterator) {
+    @DisplayName("Return invalid result whenever arg fieldsIterator misses any fields")
+    public void whenRecordMissesFieldThenReturnInvalidResult(final Record.FieldsIterator fieldsIterator) {
 
         // Given
 
         // When
-        final RecordProcessingResult result = recordProcessor.process(recordIterator);
+        final RecordProcessingResult result = recordProcessor.process(fieldsIterator);
 
         // Then
         assertThat(result)
@@ -112,15 +112,15 @@ public class RecordProcessorTest {
                 .isFalse();
     }
 
-    @ParameterizedTest(name = "{index} => recordIterator={0}")
+    @ParameterizedTest(name = "{index} => fieldsIterator={0}")
     @MethodSource("argumentsWithMissingFields")
-    @DisplayName("Return invalid result whenever arg recordIterator has any additional")
-    public void whenRecordhasAdditionalFieldThenReturnInvalidResult(final Record.RecordIterator recordIterator) {
+    @DisplayName("Return invalid result whenever arg fieldsIterator has any additional")
+    public void whenRecordhasAdditionalFieldThenReturnInvalidResult(final Record.FieldsIterator fieldsIterator) {
 
         // Given
 
         // When
-        final RecordProcessingResult result = recordProcessor.process(recordIterator);
+        final RecordProcessingResult result = recordProcessor.process(fieldsIterator);
 
         // Then
         assertThat(result)

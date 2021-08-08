@@ -15,9 +15,9 @@ public class ScoreProcessor extends SimpleProcessor {
     }
 
     @Override
-    public RecordProcessingResult processImpl(final Record.RecordIterator recordIterator) {
+    public RecordProcessingResult processImpl(final Record.FieldsIterator fieldsIterator) {
 
-        final String field = recordIterator.next();
+        final String field = fieldsIterator.next();
         final RecordProcessingResult result = new RecordProcessingResult();
 
         if (!field.matches(SCORE_MASK_PATTERN)) {

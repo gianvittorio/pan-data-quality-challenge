@@ -13,9 +13,9 @@ public class MsgProcessor extends SimpleProcessor {
     }
 
     @Override
-    public RecordProcessingResult processImpl(final Record.RecordIterator recordIterator) {
+    public RecordProcessingResult processImpl(final Record.FieldsIterator fieldsIterator) {
 
-        final String field = recordIterator.next();
+        final String field = fieldsIterator.next();
         final RecordProcessingResult result = new RecordProcessingResult();
         result.setValid(true);
 

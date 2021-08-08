@@ -21,8 +21,6 @@ public class AwsLambdaS3Function implements Function<S3Event, String> {
     @Override
     public String apply(S3Event event) {
 
-        log.info("Received event: {}", event);
-
         String result = SUCCESSFUL;
         try {
             s3EventProcessorService.process(event);

@@ -22,15 +22,15 @@ public class Record {
         this.fields = line.split(FS);
     }
 
-    public RecordIterator iterator() {
-        return new RecordIterator();
+    public FieldsIterator iterator() {
+        return new FieldsIterator();
     }
 
     public int getNumberOfFields() {
         return this.fields.length;
     }
 
-    public class RecordIterator implements Iterator<String> {
+    public class FieldsIterator implements Iterator<String> {
 
         private int position = 0;
 

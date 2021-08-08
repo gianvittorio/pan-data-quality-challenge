@@ -3,14 +3,13 @@ package com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class StreamProcessingResult extends AbstractResult {
@@ -18,5 +17,9 @@ public class StreamProcessingResult extends AbstractResult {
     private int numberOfProcessedFields = 0;
     private StringJoiner payload;
 
-    private Set<Integer> incorrectIds = new HashSet<>();
+    private Map<Integer, Set<String>> incorrectIds = new HashMap<>();
+
+    public StreamProcessingResult() {
+        this.isValid = true;
+    }
 }

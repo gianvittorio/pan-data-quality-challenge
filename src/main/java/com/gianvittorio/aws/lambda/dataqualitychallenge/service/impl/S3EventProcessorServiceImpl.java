@@ -63,11 +63,11 @@ public class S3EventProcessorServiceImpl implements S3EventProcessorService {
 
             final String outputFilePath = getOutputFilePath(inputFilePath);
 
-            log.info("Creating output: {}", outputFilePath);
+            log.info("Creating output file: {}; within {}", outputFilePath, bucketName);
 
             s3Client.putObject(bucketName, outputFilePath, inputStream, new ObjectMetadata());
 
-            log.info("Done!!!: {}", outputFilePath);
+            log.info("Created output file: {}; within {}", outputFilePath, bucketName);
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -76,9 +76,9 @@ public class S3EventProcessorServiceImpl implements S3EventProcessorService {
         }
     }
 
-    private static String getOutputFilePath(final String inputFile) {
+    private static String getOutputFilePath(final String inputFilePath) {
 
-        return inputFile
+        return inputFilePath
                 .replace(
                         DEFAULT_SEPARATOR.concat(FILE_FORMAT),
                         DEFAULT_SUFFIX.concat(DEFAULT_SEPARATOR)
