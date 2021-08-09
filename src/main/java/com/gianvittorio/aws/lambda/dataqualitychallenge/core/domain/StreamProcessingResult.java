@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringJoiner;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +14,7 @@ public class StreamProcessingResult extends AbstractResult {
     private int numberOfProcessedFields = 0;
     private StringJoiner payload;
 
-    private Map<Integer, Set<String>> incorrectIds = new HashMap<>();
+    private Set<Number> incorrectIds = new HashSet<>();
 
     public StreamProcessingResult() {
         this.isValid = true;

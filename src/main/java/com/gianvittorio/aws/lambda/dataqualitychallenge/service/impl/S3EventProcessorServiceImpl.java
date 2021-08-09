@@ -6,8 +6,10 @@ import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRe
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.StreamProcessingResult;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.InputStreamProcessor;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.Constants;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.repository.ReportsRepository;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.service.S3EventProcessorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,6 +28,8 @@ import static com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.Constan
 public class S3EventProcessorServiceImpl implements S3EventProcessorService {
 
     private final AmazonS3 s3Client;
+
+    private final ReportsRepository reportsRepository;
 
     private final InputStreamProcessor payloadProcessor;
 
@@ -54,7 +58,9 @@ public class S3EventProcessorServiceImpl implements S3EventProcessorService {
                 throw invalidFormatException;
             }
 
-            final byte[] output = payloadProcessor.process(new InputStreamReader(response.getObjectContent()))
+            final StreamProcessingResult result = payloadProcessor.process(new InputStreamReader(response.getObjectContent()));
+
+            final byte[] output = result
                     .getPayload()
                     .toString()
                     .getBytes(StandardCharsets.UTF_8);
@@ -66,6 +72,8 @@ public class S3EventProcessorServiceImpl implements S3EventProcessorService {
             log.info("Creating output file: {}; within {}", outputFilePath, bucketName);
 
             s3Client.putObject(bucketName, outputFilePath, inputStream, new ObjectMetadata());
+
+            reportsRepository.putObject(outputFilePath, result);
 
             log.info("Created output file: {}; within {}", outputFilePath, bucketName);
 

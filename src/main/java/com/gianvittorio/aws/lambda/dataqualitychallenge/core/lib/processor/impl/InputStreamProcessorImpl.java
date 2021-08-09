@@ -11,7 +11,6 @@ import lombok.extern.log4j.Log4j2;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
 import java.util.StringJoiner;
 
 @Log4j2
@@ -48,9 +47,12 @@ public class InputStreamProcessorImpl implements InputStreamProcessor {
                 if (!result.isValid()) {
                     isValid = false;
 
+                    final Integer identifMask = Integer.parseInt(record.getFields()[0]);
+
                     streamProcessingResult.getIncorrectIds()
-                            .computeIfAbsent(Integer.parseInt(record.getFields()[0]), id -> new HashSet<>())
-                            .addAll(result.getIncorrectFields());
+                                    .add(identifMask);
+
+                    log.info("INVALID: " + record.getFields()[0] + " : " + streamProcessingResult.getIncorrectIds());
 
                     continue;
                 }

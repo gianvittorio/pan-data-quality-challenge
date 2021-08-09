@@ -10,7 +10,7 @@ Resources:
         - AttributeName: filepath
           AttributeType: S
         - AttributeName: created_at
-          AttributeType: N
+          AttributeType: S
       KeySchema:
         - AttributeName: filepath
           KeyType: HASH
