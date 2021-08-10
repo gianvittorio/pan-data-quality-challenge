@@ -18,5 +18,5 @@ public interface Constants {
 
     String UNSUCCESSFUL = "unsuccessful";
 
-    String REPORTS_TABLE_NAME = "ReportsTable";
+    String ERRORS_TABLE_NAME = "ErrorsTable";
 }

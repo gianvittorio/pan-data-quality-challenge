@@ -1,33 +1,33 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.impl;
 
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Record;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RowRecord;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProcessingResult;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.SimpleProcessor;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.SimpleProcessorComposite;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
-public class AnomesdiaProcessor extends SimpleProcessor {
+public class AnomesdiaProcessorComposite extends SimpleProcessorComposite {
 
     private static final String DEFAULT_DATE_FORMAT = "yyyyMMdd";
 
     private static final String FIELD = "anomesdia";
 
-    public AnomesdiaProcessor() {
+    public AnomesdiaProcessorComposite() {
         super(FIELD);
     }
 
     @Override
-    public RecordProcessingResult processImpl(final Record.FieldsIterator fieldsIterator) {
+    public RecordProcessingResult processImpl(final RowRecord.FieldsIterator fieldsIterator) {
 
 
         final String field = fieldsIterator.next();
         final RecordProcessingResult result = new RecordProcessingResult();
         if (!assertDate(field)) {
             result.setValid(false);
-            result.getIncorrectFields()
+            result.getMissingFIeldsSet()
                     .add(field);
         }
 

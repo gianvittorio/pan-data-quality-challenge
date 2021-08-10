@@ -7,13 +7,13 @@ import java.util.Iterator;
 
 @Getter
 @EqualsAndHashCode
-public class Record {
+public class RowRecord {
 
     final String[] fields;
 
     static final String FS = ",";
 
-    public Record(final String line) {
+    public RowRecord(final String line) {
 
         if (line == null) {
             throw new IllegalArgumentException();
@@ -36,7 +36,7 @@ public class Record {
 
         @Override
         public boolean hasNext() {
-            return (this.position < Record.this.getNumberOfFields());
+            return (this.position < RowRecord.this.getNumberOfFields());
         }
 
         @Override
@@ -46,7 +46,7 @@ public class Record {
                 return null;
             }
 
-            return Record.this.fields[position++];
+            return RowRecord.this.fields[position++];
         }
     }
 }

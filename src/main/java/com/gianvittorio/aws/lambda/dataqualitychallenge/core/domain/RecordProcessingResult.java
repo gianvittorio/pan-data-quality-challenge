@@ -3,20 +3,23 @@ package com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.StringJoiner;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RecordProcessingResult extends AbstractResult {
+public class RecordProcessingResult {
+
+    private boolean isValid = true;
 
     private int numberOfProcessedFields = 0;
 
-    private Set<String> incorrectFields = new HashSet<>();
+    private StringJoiner message;
 
-    public RecordProcessingResult() {
-        this.isValid = true;
-    }
+    private Set<String> missingFIeldsSet = new HashSet<>();
 }

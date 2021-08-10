@@ -1,6 +1,6 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.impl;
 
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Record;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RowRecord;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProcessingResult;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.RecordProcessorComposite;
 
@@ -11,7 +11,7 @@ public class FirstProcessor extends RecordProcessorComposite {
     }
 
     @Override
-    public RecordProcessingResult process(final Record.FieldsIterator fieldsIterator) {
+    public RecordProcessingResult process(final RowRecord.FieldsIterator fieldsIterator) {
 
         RecordProcessingResult result = null;
         if (fieldsIterator == null) {
@@ -27,8 +27,8 @@ public class FirstProcessor extends RecordProcessorComposite {
             result.setNumberOfProcessedFields(1 + nextResult.getNumberOfProcessedFields());
             if (!nextResult.isValid() || result.getNumberOfProcessedFields() != this.rank) {
                 result.setValid(false);
-                result.getIncorrectFields()
-                        .addAll(nextResult.getIncorrectFields());
+                result.getMissingFIeldsSet()
+                        .addAll(nextResult.getMissingFIeldsSet());
             }
         }
 

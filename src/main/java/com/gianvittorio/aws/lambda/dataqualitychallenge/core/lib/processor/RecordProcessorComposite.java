@@ -1,6 +1,6 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor;
 
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Record;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RowRecord;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProcessingResult;
 
 public abstract class RecordProcessorComposite implements RecordProcessor {
@@ -16,7 +16,7 @@ public abstract class RecordProcessorComposite implements RecordProcessor {
     }
 
     @Override
-    public RecordProcessingResult process(final Record.FieldsIterator fieldsIterator) {
+    public RecordProcessingResult process(final RowRecord.FieldsIterator fieldsIterator) {
 
         RecordProcessingResult result = null;
         if (fieldsIterator == null) {

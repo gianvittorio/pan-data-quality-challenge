@@ -1,22 +1,22 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.impl;
 
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Record;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RowRecord;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProcessingResult;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.SimpleProcessor;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.SimpleProcessorComposite;
 
 
-public class IdentifMaskProcessor extends SimpleProcessor {
+public class IdentifMaskProcessorComposite extends SimpleProcessorComposite {
 
     private static final String IDENTIF_MASK_PATTERN = "^\\d+$";
 
     private static final String FIELD = "identif_mask";
 
-    public IdentifMaskProcessor() {
+    public IdentifMaskProcessorComposite() {
         super(FIELD);
     }
 
     @Override
-    public RecordProcessingResult processImpl(final Record.FieldsIterator fieldsIterator) {
+    public RecordProcessingResult processImpl(final RowRecord.FieldsIterator fieldsIterator) {
 
         final String field = fieldsIterator.next();
 
@@ -24,7 +24,7 @@ public class IdentifMaskProcessor extends SimpleProcessor {
         if (!field.matches(IDENTIF_MASK_PATTERN)) {
             result.setValid(false);
 
-            result.getIncorrectFields()
+            result.getMissingFIeldsSet()
                     .add(field);
         }
 

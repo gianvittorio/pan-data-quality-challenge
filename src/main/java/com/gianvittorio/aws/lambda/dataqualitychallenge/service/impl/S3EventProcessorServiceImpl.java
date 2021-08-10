@@ -6,10 +6,10 @@ import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRe
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.StreamProcessingResult;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.InputStreamProcessor;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.CSVStreamProcessingResult;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.CSVInputStreamProcessor;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.Constants;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.repository.ReportsRepository;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.repository.ErrorsRepository;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.service.S3EventProcessorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import static com.amazonaws.services.s3.event.S3EventNotification.S3Entity;
 import static com.gianvittorio.aws.lambda.dataqualitychallenge.core.util.Constants.*;
@@ -29,9 +31,9 @@ public class S3EventProcessorServiceImpl implements S3EventProcessorService {
 
     private final AmazonS3 s3Client;
 
-    private final ReportsRepository reportsRepository;
+    private final ErrorsRepository errorsRepository;
 
-    private final InputStreamProcessor payloadProcessor;
+    private final CSVInputStreamProcessor payloadProcessor;
 
     @Override
     public void process(final S3Event event) {
@@ -58,7 +60,10 @@ public class S3EventProcessorServiceImpl implements S3EventProcessorService {
                 throw invalidFormatException;
             }
 
-            final StreamProcessingResult result = payloadProcessor.process(new InputStreamReader(response.getObjectContent()));
+            final CSVStreamProcessingResult result = payloadProcessor.process(new InputStreamReader(response.getObjectContent()));
+            result.setFilePath(inputFilePath);
+            result.setBucketName(bucketName);
+            result.setCreatedAt(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")));
 
             final byte[] output = result
                     .getPayload()
@@ -73,7 +78,7 @@ public class S3EventProcessorServiceImpl implements S3EventProcessorService {
 
             s3Client.putObject(bucketName, outputFilePath, inputStream, new ObjectMetadata());
 
-            reportsRepository.putObject(outputFilePath, result);
+            errorsRepository.putObject(result);
 
             log.info("Created output file: {}; within {}", outputFilePath, bucketName);
 

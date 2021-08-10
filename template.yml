@@ -2,10 +2,10 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Description: An AWS Lambda application that calls the Lambda API.
 Resources:
-  ReportsTable:
+  ErrorsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ReportsTable
+      TableName: ErrorsTable
       AttributeDefinitions:
         - AttributeName: filepath
           AttributeType: S
@@ -39,7 +39,7 @@ Resources:
         - AWSLambdaVPCAccessExecutionRole
         - AmazonS3FullAccess
         - DynamoDBCrudPolicy:
-            TableName: !Ref ReportsTable
+            TableName: !Ref ErrorsTable
       Tracing: Active
       Events:
         s3Notification:

@@ -1,9 +1,9 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.impl;
 
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Record;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RowRecord;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProcessingResult;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.StreamProcessingResult;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.InputStreamProcessor;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.CSVStreamProcessingResult;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.CSVInputStreamProcessor;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.RecordProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,14 +15,14 @@ import java.util.StringJoiner;
 
 @Log4j2
 @RequiredArgsConstructor
-public class InputStreamProcessorImpl implements InputStreamProcessor {
+public class CSVInputStreamProcessorImpl implements CSVInputStreamProcessor {
 
     private final RecordProcessor recordProcessor;
 
     @Override
-    public StreamProcessingResult process(final InputStreamReader inputStreamReader) {
+    public CSVStreamProcessingResult process(final InputStreamReader inputStreamReader) {
 
-        final StreamProcessingResult streamProcessingResult = new StreamProcessingResult();
+        final CSVStreamProcessingResult csvStreamProcessingResult = new CSVStreamProcessingResult();
 
         BufferedReader bufferedReader = null;
         String csvOutput = null;
@@ -42,17 +42,17 @@ public class InputStreamProcessorImpl implements InputStreamProcessor {
                     continue;
                 }
 
-                Record record = new Record(csvOutput);
-                RecordProcessingResult result = recordProcessor.process(record.iterator());
+                RowRecord rowRecord = new RowRecord(csvOutput);
+                RecordProcessingResult result = recordProcessor.process(rowRecord.iterator());
                 if (!result.isValid()) {
                     isValid = false;
 
-                    final Integer identifMask = Integer.parseInt(record.getFields()[0]);
+                    final Integer identifMask = Integer.parseInt(rowRecord.getFields()[0]);
 
-                    streamProcessingResult.getIncorrectIds()
+                    csvStreamProcessingResult.getMissingRows()
                                     .add(identifMask);
 
-                    log.info("INVALID: " + record.getFields()[0] + " : " + streamProcessingResult.getIncorrectIds());
+                    log.info("INVALID: " + rowRecord.getFields()[0] + " : " + csvStreamProcessingResult.getMissingRows());
 
                     continue;
                 }
@@ -73,9 +73,9 @@ public class InputStreamProcessorImpl implements InputStreamProcessor {
             }
         }
 
-        streamProcessingResult.setPayload(payload);
-        streamProcessingResult.setValid(isValid);
+        csvStreamProcessingResult.setPayload(payload);
+        csvStreamProcessingResult.setValid(isValid);
 
-        return streamProcessingResult;
+        return csvStreamProcessingResult;
     }
 }

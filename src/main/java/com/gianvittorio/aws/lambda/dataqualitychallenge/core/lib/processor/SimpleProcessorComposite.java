@@ -1,16 +1,16 @@
 package com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor;
 
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Record;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RowRecord;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProcessingResult;
 
-public abstract class SimpleProcessor extends RecordProcessorComposite {
+public abstract class SimpleProcessorComposite extends RecordProcessorComposite {
 
-    public SimpleProcessor(String field) {
+    public SimpleProcessorComposite(String field) {
         super(field);
     }
 
     @Override
-    public final RecordProcessingResult process(final Record.FieldsIterator fieldsIterator) {
+    public final RecordProcessingResult process(final RowRecord.FieldsIterator fieldsIterator) {
 
         RecordProcessingResult result = null;
         if (fieldsIterator == null) {
@@ -25,13 +25,13 @@ public abstract class SimpleProcessor extends RecordProcessorComposite {
             result.setNumberOfProcessedFields(1 + nextResult.getNumberOfProcessedFields());
             if (!nextResult.isValid()) {
                 result.setValid(false);
-                result.getIncorrectFields()
-                        .addAll(nextResult.getIncorrectFields());
+                result.getMissingFIeldsSet()
+                        .addAll(nextResult.getMissingFIeldsSet());
             }
         }
 
         return result;
     }
 
-    public abstract RecordProcessingResult processImpl(final Record.FieldsIterator fieldsIterator);
+    public abstract RecordProcessingResult processImpl(final RowRecord.FieldsIterator fieldsIterator);
 }

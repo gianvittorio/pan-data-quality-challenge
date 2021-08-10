@@ -2,7 +2,7 @@ package com.gianvittorio.aws.lambda.dataqualitychallenge.unit.core.lib.processor
 
 import com.gianvittorio.aws.lambda.dataqualitychallenge.TestUtils;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.config.RecordProcessorConfiguration;
-import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.Record;
+import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RowRecord;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.domain.RecordProcessingResult;
 import com.gianvittorio.aws.lambda.dataqualitychallenge.core.lib.processor.RecordProcessor;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +24,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RecordProcessorConfiguration.class})
-public class RecordProcessorTest {
+public class RowRecordProcessorTest {
 
     @Autowired
     RecordProcessor recordProcessor;
@@ -32,7 +32,7 @@ public class RecordProcessorTest {
     @ParameterizedTest(name = "{index} => fieldsIterator={0}")
     @MethodSource("argumentsWitValidFields")
     @DisplayName("Return valid result whenever arg fieldsIterator is valid")
-    public void whenRecordIsValidThenReturnValidResult(final Record.FieldsIterator fieldsIterator) {
+    public void whenRecordIsValidThenReturnValidResult(final RowRecord.FieldsIterator fieldsIterator) {
 
         // Given
 
@@ -68,7 +68,7 @@ public class RecordProcessorTest {
 
         // When
         Throwable throwable = catchThrowable(() -> {
-            new Record(null).iterator();
+            new RowRecord(null).iterator();
         });
 
         // Then
@@ -80,7 +80,7 @@ public class RecordProcessorTest {
     @ParameterizedTest(name = "{index} => fieldsIterator={0}")
     @MethodSource("argumentsWitDifferentFields")
     @DisplayName("Return invalid result whenever arg fieldsIterator has any non matching field")
-    public void whenRecordHasFieldWrongFormatThenReturnInvalidResult(final Record.FieldsIterator fieldsIterator) {
+    public void whenRecordHasFieldWrongFormatThenReturnInvalidResult(final RowRecord.FieldsIterator fieldsIterator) {
 
         // Given
 
@@ -98,7 +98,7 @@ public class RecordProcessorTest {
     @ParameterizedTest(name = "{index} => fieldsIterator={0}")
     @MethodSource("argumentsWithMissingFields")
     @DisplayName("Return invalid result whenever arg fieldsIterator misses any fields")
-    public void whenRecordMissesFieldThenReturnInvalidResult(final Record.FieldsIterator fieldsIterator) {
+    public void whenRecordMissesFieldThenReturnInvalidResult(final RowRecord.FieldsIterator fieldsIterator) {
 
         // Given
 
@@ -115,7 +115,7 @@ public class RecordProcessorTest {
     @ParameterizedTest(name = "{index} => fieldsIterator={0}")
     @MethodSource("argumentsWithMissingFields")
     @DisplayName("Return invalid result whenever arg fieldsIterator has any additional")
-    public void whenRecordhasAdditionalFieldThenReturnInvalidResult(final Record.FieldsIterator fieldsIterator) {
+    public void whenRecordhasAdditionalFieldThenReturnInvalidResult(final RowRecord.FieldsIterator fieldsIterator) {
 
         // Given
 
